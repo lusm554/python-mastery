@@ -1,11 +1,17 @@
 # pcost.py
 
-import csv
+def portfolio_cost(filepath):
+  total_shares_cost = 0
+  with open(filepath, 'r') as f:
+    for line in f:
+      row = [x for x in line.split(" ") if x != '']
+      try:
+        total_shares_cost += int(row[1]) * float(row[2])
+      except ValueError as error:
+        print(f"Couldn't parse: {repr(line)}")
+        print(f"Reason: {error}")
+  return total_shares_cost
 
-total_shares_cost = 0
-with open('Data/portfolio.dat', 'r') as f:
-  rows = csv.reader(f, delimiter=' ')
-  for row in rows:
-    total_shares_cost += int(row[1]) * float(row[2])
-
-print("Total cost of shares in portoflio: %s" % total_shares_cost)
+print(portfolio_cost('Data/portfolio.dat'))
+print(portfolio_cost('Data/portfolio3.dat'))
+print(portfolio_cost('Data/portfolio2.dat'))
