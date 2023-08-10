@@ -5,6 +5,13 @@ import csv
 def as_tuples(route, date, daytype, rides):
   return (route, date, daytype, rides)
 
+def as_dict(route, date, daytype, rides):
+	return {
+    'route': route,
+    'date': date,
+    'daytype': daytype,
+    'rides': rides,
+	}
 
 class Row:
   def __init__(self, route, date, daytype, rides):
@@ -58,6 +65,7 @@ if __name__ == '__main__':
     
 
   print('Memory Use As Tuples: Current {:,}, Peak {:,}'.format(*rides_traced_memory(as_tuples)))
+  print('Memory Use As Dict: Current {:,}, Peak {:,}'.format(*rides_traced_memory(as_dict)))
   print('Memory Use As Class Instance: Current {:,}, Peak {:,}'.format(*rides_traced_memory(as_class)))
   print('Memory Use As Named Tuple: Current {:,}, Peak {:,}'.format(*rides_traced_memory(as_namedtuple)))
   print('Memory Use As Class Slots: Current {:,}, Peak {:,}'.format(*rides_traced_memory(as_class_slots)))
