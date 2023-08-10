@@ -12,6 +12,7 @@ def portfolio_cost(filepath):
         print(f"Reason: {error}")
   return total_shares_cost
 
-print(portfolio_cost('Data/portfolio.dat'))
-print(portfolio_cost('Data/portfolio3.dat'))
-print(portfolio_cost('Data/portfolio2.dat'))
+if __name__ == '__main__':
+  print(portfolio_cost('Data/portfolio.dat'))
+  print(portfolio_cost('Data/portfolio3.dat'))
+  print(portfolio_cost('Data/portfolio2.dat'))
