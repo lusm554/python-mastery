@@ -41,6 +41,9 @@ class RowSlot:
     self.daytype = daytype
     self.rides = rides
 
+  def __repr__(self):
+    return f"{type(self).__name__}('{self.route}', {self.date}, {self.daytype}, {self.rides})"
+
 def read_rides_as_rowslots(filename):
   record_structure = lambda route, date, daytype, rides: RowSlot(route, date, daytype, rides)
   return read_rides(record_structure, filename) 
