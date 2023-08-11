@@ -41,7 +41,7 @@ class RowSlot:
     self.daytype = daytype
     self.rides = rides
 
-def read_rides_as_namedtuples(filename):
+def read_rides_as_rowslots(filename):
 	record_structure = lambda route, date, daytype, rides: RowSlot(route, date, daytype, rides)
 	return read_rides(record_structure, filename)	
 
@@ -70,4 +70,4 @@ if __name__ == '__main__':
   print('Memory Use As Dicts: Current {:,}, Peak {:,}'.format(*rides_traced_memory(read_rides_as_dicts)))
   print('Memory Use As Class Instance: Current {:,}, Peak {:,}'.format(*rides_traced_memory(read_rides_as_classes)))
   print('Memory Use As Named Tuple: Current {:,}, Peak {:,}'.format(*rides_traced_memory(read_rides_as_namedtuples)))
-  print('Memory Use As Class Slots: Current {:,}, Peak {:,}'.format(*rides_traced_memory(read_rides_as_namedtuples)))
+  print('Memory Use As Class Slots: Current {:,}, Peak {:,}'.format(*rides_traced_memory(read_rides_as_rowslots)))
