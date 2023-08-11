@@ -3,17 +3,17 @@
 import csv
 
 def read_rides_as_tuples(filename):
-	record_structure = lambda route, date, daytype, rides: (route, date, daytype, rides)
-	return read_rides(record_structure, filename)	
+  record_structure = lambda route, date, daytype, rides: (route, date, daytype, rides)
+  return read_rides(record_structure, filename) 
 
 def read_rides_as_dicts(filename):
-	record_structure = lambda route, date, daytype, rides: {
+  record_structure = lambda route, date, daytype, rides: {
     'route': route,
     'date': date,
     'daytype': daytype,
     'rides': rides
   }
-	return read_rides(record_structure, filename)	
+  return read_rides(record_structure, filename) 
 
 class Row:
   def __init__(self, route, date, daytype, rides):
@@ -23,15 +23,15 @@ class Row:
     self.rides = rides
 
 def read_rides_as_classes(filename):
-	record_structure = lambda route, date, daytype, rides: Row(route, date, daytype, rides)
-	return read_rides(record_structure, filename)	
+  record_structure = lambda route, date, daytype, rides: Row(route, date, daytype, rides)
+  return read_rides(record_structure, filename) 
 
 from collections import namedtuple
 RowNamedT = namedtuple('Row', ['route', 'date', 'daytype', 'rides']) 
 
 def read_rides_as_namedtuples(filename):
-	record_structure = lambda route, date, daytype, rides: RowNamedT(route, date, daytype, rides)
-	return read_rides(record_structure, filename)	
+  record_structure = lambda route, date, daytype, rides: RowNamedT(route, date, daytype, rides)
+  return read_rides(record_structure, filename) 
 
 class RowSlot:
   __slots__ = ['route', 'date', 'daytype', 'rides']
@@ -42,8 +42,8 @@ class RowSlot:
     self.rides = rides
 
 def read_rides_as_rowslots(filename):
-	record_structure = lambda route, date, daytype, rides: RowSlot(route, date, daytype, rides)
-	return read_rides(record_structure, filename)	
+  record_structure = lambda route, date, daytype, rides: RowSlot(route, date, daytype, rides)
+  return read_rides(record_structure, filename) 
 
 def read_rides(data_structure, filename):
   records = []
