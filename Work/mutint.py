@@ -8,6 +8,7 @@ class MutInt:
   def __init__(self, value):
     self.value = value
 
+  ########################## Output ##########################
   def __str__(self):
     return str(self.value)
 
@@ -17,6 +18,7 @@ class MutInt:
   def __format__(self, fmt):
     return format(self.value, fmt)
 
+  ########################## Math Operators ##########################
   def __add__(self, other):
     if isinstance(other, MutInt):
       return MutInt(self.value + other.value)
@@ -37,6 +39,7 @@ class MutInt:
     else:
       return NotImplemented
 
+  ########################## Comparisons ##########################
   def __eq__(self, other):
     if isinstance(other, MutInt):
       return self.value == other.value
@@ -52,3 +55,12 @@ class MutInt:
       return self.value < other
     else:
       return NotImplemented
+
+  ########################## Conversions ##########################
+  def __int__(self):
+    return self.value
+
+  __index__ = __int__
+
+  def __float__(self):
+    return float(self.value)
