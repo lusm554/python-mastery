@@ -59,6 +59,21 @@ def read_rides(data_structure, filename):
       records.append(record)
   return records
 
+def read_rides_as_columns(filename):
+  '''
+  Read the bus ride data into 4 lists, representing columns
+  '''
+  routes, dates, daytypes, numrides = [], [], [], []
+  with open(filename) as f:
+    rows = csv.reader(f)
+    headings = next(rows)
+    for row in rows:
+      routes.append(row[0])
+      dates.append(row[1])
+      daytypes.append(row[2])
+      numrides.append(row[3])
+  return dict(routes=routes, dates=dates, daytypes=daytypes, numrides=numrides)
+
 if __name__ == '__main__':
   import tracemalloc
   
@@ -74,3 +89,4 @@ if __name__ == '__main__':
   print('Memory Use As Class Instance: Current {:,}, Peak {:,}'.format(*rides_traced_memory(read_rides_as_classes)))
   print('Memory Use As Named Tuple: Current {:,}, Peak {:,}'.format(*rides_traced_memory(read_rides_as_namedtuples)))
   print('Memory Use As Class Slots: Current {:,}, Peak {:,}'.format(*rides_traced_memory(read_rides_as_rowslots)))
+  print('Memory Use As Columns: Current {:,}, Peak {:,}'.format(*rides_traced_memory(read_rides_as_columns)))
