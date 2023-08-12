@@ -1,19 +1,52 @@
 # readriders.py
 
 import csv
+from collections import abc
+
 
 def read_rides_as_tuples(filename):
   record_structure = lambda route, date, daytype, rides: (route, date, daytype, rides)
   return read_rides(record_structure, filename) 
 
+class RideData(abc.Sequence):
+  def __init__(self):
+    # Each value is a list with all of the values (a column)
+    self.routes = []
+    self.dates = []
+    self.daytypes = []
+    self.numrides = []
+
+  def __len__(self):
+    # All lists assumed to have the same length
+    return len(self.routes)
+
+  def __getitem__(self, index):
+    return { 'route': self.routes[index],
+              'date': self.dates[index],
+              'daytype': self.daytypes[index],
+              'rides': self.numrides[index] }
+  
+  def append(self, d):
+    self.routes.append(d['route'])
+    self.dates.append(d['date'])
+    self.daytypes.append(d['daytype'])
+    self.numrides.append(d['rides'])
+
 def read_rides_as_dicts(filename):
-  record_structure = lambda route, date, daytype, rides: {
-    'route': route,
-    'date': date,
-    'daytype': daytype,
-    'rides': rides
-  }
-  return read_rides(record_structure, filename) 
+  records = RideData() 
+  with open(filename) as f:
+    rows = csv.reader(f)
+    headings = next(rows)
+    for row in rows:
+      route, date, daytype, rides = row[0], row[1], row[2], int(row[3])
+      record = {
+        'route': route,
+        'date': date,
+        'daytype': daytype,
+        'rides': rides
+      }
+      records.append(record)
+  return records
 
 class Row:
   def __init__(self, route, date, daytype, rides):
