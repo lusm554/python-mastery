@@ -21,10 +21,15 @@ class RideData(abc.Sequence):
     return len(self.routes)
 
   def __getitem__(self, index):
-    return { 'route': self.routes[index],
-              'date': self.dates[index],
-              'daytype': self.daytypes[index],
-              'rides': self.numrides[index] }
+    result = {'route': self.routes.__getitem__(index),
+              'date': self.dates.__getitem__(index),
+              'daytype': self.daytypes.__getitem__(index),
+              'rides': self.numrides.__getitem__(index) }
+    if isinstance(index, slice):
+      result = [dict(zip(['route', 'data', 'daytype', 'rides'], row)) for row in zip(*[val for _, val in result.items()])]
+      return result
+    else:
+      return result
   
   def append(self, d):
     self.routes.append(d['route'])
@@ -96,16 +101,20 @@ def read_rides_as_columns(filename):
   '''
   Read the bus ride data into 4 lists, representing columns
   '''
-  routes, dates, daytypes, numrides = [], [], [], []
+  records = RideData()
   with open(filename) as f:
     rows = csv.reader(f)
     headings = next(rows)
     for row in rows:
-      routes.append(row[0])
-      dates.append(row[1])
-      daytypes.append(row[2])
-      numrides.append(row[3])
-  return dict(routes=routes, dates=dates, daytypes=daytypes, numrides=numrides)
+      route, date, daytype, rides = row[0], row[1], row[2], int(row[3])
+      record = {
+        'route': route,
+        'date': date,
+        'daytype': daytype,
+        'rides': rides
+      }
+      records.append(record)
+  return records
 
 if __name__ == '__main__':
   import tracemalloc
