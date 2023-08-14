@@ -25,7 +25,14 @@ def read_portfolio(filename):
       records.append(record) 
   return records
 
+def print_portfolio(data):
+  headers = ("name", "shares", "price")
+  print('%10s %10s %10s' % headers)
+  print("---------- "*len(headers))
+  for s in data:
+    print('%10s %10d %10.2f' % (s.name, s.shares, s.price))
+
 if __name__ == "__main__":
   from pprint import pprint
   portfolio = read_portfolio('Data/portfolio.csv')
-  pprint(portfolio[:10])
+  print_portfolio(portfolio)
