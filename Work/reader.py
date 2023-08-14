@@ -9,7 +9,6 @@ def read_csv_as_dicts(filename, types):
     headers = next(rows)
     for row in rows:
       records.append({ key: cast(val) for key, val, cast in zip(headers, row, types) })
-
   return records
 
 if __name__ == '__main__':
