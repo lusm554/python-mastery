@@ -14,6 +14,7 @@ class Stock:
     values = [cast(val) for cast, val in zip(cls._types, row)]
     return cls(*values)
 
+  @property
   def cost(self):
     return self.shares * self.price
   
