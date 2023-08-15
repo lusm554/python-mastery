@@ -42,6 +42,8 @@ def create_formatter(fmt):
     raise ValueError(f'Format {fmt} not found')
 
 def print_table(records, headers, formatter):
+  if not isinstance(formatter, TableFormatter):
+    raise TypeError('Not instance of TableFormatter')
   formatter.headings(headers)
   for r in records:
     rowdata = [getattr(r, fieldname) for fieldname in headers]
