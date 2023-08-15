@@ -35,6 +35,16 @@ class HTMLTableFormatter(TableFormatter):
     dt = ' '.join(f'<td>{d}</td>' for d in rowdata)
     print(f'<tr> {dt} </tr>')
 
+class ColumnFormatMixin:
+  formats = []
+  def row(self, rowdata):
+    rowdata = [(fmt % d) for fmt, d in zip(self.formats, rowdata)]
+    super().row(rowdata)
+
+class UpperHeadersMixin:
+  def headings(self, headers):
+    super().headings([h.upper() for h in headers])
+
 def create_formatter(fmt):
   if fmt == 'text':
     return TextTableFormatter()
@@ -55,8 +65,14 @@ def print_table(records, headers, formatter):
 
 if __name__ == '__main__':
   import stock, reader
-  portfolio = reader.read_csv_as_instances('Data/portfolio.csv', stock.Stock)
-  formatter = create_formatter('csv') 
+  portfolio = reader.read_csv_as_instances('Data/portfolio.csv', stock.Stock) 
+  class PortfolioFormatter(ColumnFormatMixin, TextTableFormatter):
+    formats = ['%s', '%d', '%0.2f']
+  formatter = PortfolioFormatter()
   print_table(portfolio, ['name','shares','price'], formatter)
-  formatter = create_formatter('html') 
+  print()
+  
+  class PortfolioFormatter2(UpperHeadersMixin, TextTableFormatter):
+    pass
+  formatter = PortfolioFormatter2()
   print_table(portfolio, ['name','shares','price'], formatter)
