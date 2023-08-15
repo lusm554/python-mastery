@@ -21,13 +21,13 @@ class Stock:
     self.shares -= sellshares
   
 
-def read_portfolio(filename):
+def read_portfolio(filename, cls):
   records = []
   with open(filename, 'r') as f:
     rows = csv.reader(f)
     headers = next(rows)
     for row in rows:
-      record = Stock(row[0], int(row[1]), float(row[2]))
+      record = cls.from_row(row) 
       records.append(record) 
   return records
 
@@ -39,6 +39,7 @@ def print_portfolio(data):
     print('%10s %10d %10.2f' % (s.name, s.shares, s.price))
 
 if __name__ == "__main__":
-  from pprint import pprint
-  portfolio = read_portfolio('Data/portfolio.csv')
-  print_portfolio(portfolio)
+	import tableformat
+	import reader
+	portfolio = read_portfolio('Data/portfolio.csv', Stock)
+	tableformat.print_table(portfolio, ['name', 'shares', 'price'])
