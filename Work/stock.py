@@ -54,7 +54,6 @@ class Stock:
   def sell(self, sellshares):
     self.shares -= sellshares
 
-
 def read_portfolio(filename, cls):
   records = []
   with open(filename, 'r') as f:
@@ -72,8 +71,21 @@ def print_portfolio(data):
   for s in data:
     print('%10s %10d %10.2f' % (s.name, s.shares, s.price))
 
+class redirect_stdout:
+  def __init__(self, out_file):
+    self.out_file = out_file
+
+  def __enter__(self):
+    self.stdout = sys.stdout
+    sys.stdout = self.out_file
+
+  def __exit__(self, ty, val, tb):
+    sys.stdout = self.stdout
+
 if __name__ == "__main__":
-	import tableformat
-	import reader
-	portfolio = read_portfolio('Data/portfolio.csv', Stock)
-	tableformat.print_table(portfolio, ['name', 'shares', 'price'])
+  import tableformat
+  import reader
+  import sys
+  portfolio = read_portfolio('Data/portfolio.csv', Stock)
+  with redirect_stdout(open('out.txt', 'w')) as file:
+    tableformat.print_table(portfolio, ['name', 'shares', 'price'], tableformat.create_formatter('text'))
