@@ -45,15 +45,24 @@ class UpperHeadersMixin:
   def headings(self, headers):
     super().headings([h.upper() for h in headers])
 
-def create_formatter(fmt):
+def create_formatter(fmt, column_formats=None, upper_headers=False):
   if fmt == 'text':
-    return TextTableFormatter()
+    formatter_cls = TextTableFormatter
   elif fmt == 'csv':
-    return CSVTableFormatter()
+    formatter_cls = CSVTableFormatter
   elif fmt == 'html':
-    return HTMLTableFormatter()
+    formatter_cls = HTMLTableFormatter
   else:
     raise ValueError(f'Format {fmt} not found')
+
+  if column_formats:
+    class formatter_cls(ColumnFormatMixin, formatter_cls):
+      formats = column_formats
+
+  if upper_headers:
+    class formatter_cls(UpperHeadersMixin, formatter_cls):
+      pass
+  return formatter_cls()
 
 def print_table(records, headers, formatter):
   if not isinstance(formatter, TableFormatter):
@@ -66,13 +75,8 @@ def print_table(records, headers, formatter):
 if __name__ == '__main__':
   import stock, reader
   portfolio = reader.read_csv_as_instances('Data/portfolio.csv', stock.Stock) 
-  class PortfolioFormatter(ColumnFormatMixin, TextTableFormatter):
-    formats = ['%s', '%d', '%0.2f']
-  formatter = PortfolioFormatter()
+  formatter = create_formatter('csv', column_formats=['"%s"','%d','%0.2f']) 
   print_table(portfolio, ['name','shares','price'], formatter)
   print()
-  
-  class PortfolioFormatter2(UpperHeadersMixin, TextTableFormatter):
-    pass
-  formatter = PortfolioFormatter2()
+  formatter = create_formatter('text', upper_headers=True)
   print_table(portfolio, ['name','shares','price'], formatter)
