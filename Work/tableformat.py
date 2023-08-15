@@ -31,6 +31,16 @@ class HTMLTableFormatter(TableFormatter):
     dt = ' '.join(f'<td>{d}</td>' for d in rowdata)
     print(f'<tr> {dt} </tr>')
 
+def create_formatter(fmt):
+  if fmt == 'text':
+    return TextTableFormatter()
+  elif fmt == 'csv':
+    return CSVTableFormatter()
+  elif fmt == 'html':
+    return HTMLTableFormatter()
+  else:
+    raise ValueError(f'Format {fmt} not found')
+
 def print_table(records, headers, formatter):
   formatter.headings(headers)
   for r in records:
@@ -40,7 +50,7 @@ def print_table(records, headers, formatter):
 if __name__ == '__main__':
   import stock, reader
   portfolio = reader.read_csv_as_instances('Data/portfolio.csv', stock.Stock)
-  formatter = CSVTableFormatter()
+  formatter = create_formatter('csv') 
   print_table(portfolio, ['name','shares','price'], formatter)
-  formatter = HTMLTableFormatter()
+  formatter = create_formatter('html') 
   print_table(portfolio, ['name','shares','price'], formatter)
