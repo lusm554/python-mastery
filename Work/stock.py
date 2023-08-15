@@ -3,7 +3,7 @@
 import csv
 
 class Stock:
-  __slots__ = ('name', '_shares', '_price')
+  __slots__ = ('name', '_shares', '_price') # slots!
   _types = (str, int, float)
   def __init__(self, name, shares, price):
     self.name = name
@@ -12,6 +12,7 @@ class Stock:
 
   @classmethod
   def from_row(cls, row):
+    ''' Alt constructor '''
     values = [cast(val) for cast, val in zip(cls._types, row)]
     return cls(*values)
 
