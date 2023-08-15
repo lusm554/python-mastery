@@ -26,7 +26,7 @@ class Stock:
 
   @shares.setter
   def shares(self, value):
-    if not isinstance(value, self._types[1]):
+    if not isinstance(value, self._types[1]): # here we using type checking by _types class variable
       raise TypeError(f'Expected {self._types[1].__name__}')
     if not value >= 0:
       raise TypeError('Expected shares >= 0')
@@ -38,7 +38,7 @@ class Stock:
 
   @price.setter
   def price(self, value):
-    if not isinstance(value, self._types[2]):
+    if not isinstance(value, self._types[2]): # here we using type checking by _types class variable
       raise TypeError(f'Expected {self._types[2].__name__}')
     if not value >= 0:
       raise TypeError('Expected price >= 0')
