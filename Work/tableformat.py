@@ -1,9 +1,15 @@
 # tableformat.py
 
-def print_table(data, headers):
-  frmt = '%10s ' * len(headers)
-  print(frmt % tuple(headers))
-  print("---------- "*len(headers))
+class TableFormatter:
+  def headings(self, headers):
+    raise NotImplementedError()
+
+  def row(self, rowdata):
+    raise NotImplementedError()
+
+def print_table(records, headers, formatter):
+  formatter.headings(headers)
   for s in data:
-    print(frmt % tuple(getattr(s, attr) for attr in headers))
+    rowdata = [getattr(r, fieldname) for fieldname in headers]
+    formatter.row(rowdata)
 
