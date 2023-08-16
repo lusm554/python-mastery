@@ -1,7 +1,10 @@
 # validate.py
 
 class Validator:
-  def __init__(self, name):
+  def __init__(self, name=None):
+    self.name = name
+
+  def __set_name__(self, cls, name):
     self.name = name
 
   @classmethod
@@ -54,9 +57,9 @@ class NonEmptyString(String, NonEmpty):
 
 if __name__ == '__main__':
   class Stock:
-    name = String('name')
-    shares = PositiveInteger('shares')
-    price = PositiveFloat('price')
+    name = String()
+    shares = PositiveInteger()
+    price = PositiveFloat()
     def __init__(self, name, shares, price):
       self.name = name
       self.shares = shares
