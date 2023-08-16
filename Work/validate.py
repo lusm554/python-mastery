@@ -1,9 +1,15 @@
 # validate.py
 
 class Validator:
+  def __init__(self, name):
+    self.name = name
+
   @classmethod
   def check(cls, value):
     return value
+
+  def __set__(self, instance, value):
+    instance.__dict__[self.name] = self.check(value)
 
 class Typed(Validator):
   expected_type = object
@@ -37,19 +43,20 @@ class NonEmpty(Validator):
     return super().check(value)
 
 class PositiveInteger(Integer, Positive):
-	pass
+  pass
 
 class PositiveFloat(Float, Positive):
-	pass
+  pass
 
 class NonEmptyString(String, NonEmpty):
-	pass
+  pass
 
 
 if __name__ == '__main__':
   class Stock:
-    __slots__ = ('name', '_shares', '_price') # slots!
-    _types = (str, int, float)
+    name = String('name')
+    shares = PositiveInteger('shares')
+    price = PositiveFloat('price')
     def __init__(self, name, shares, price):
       self.name = name
       self.shares = shares
@@ -58,34 +65,22 @@ if __name__ == '__main__':
     def __repr__(self):
       return f'Stock(\'{self.name}\', {self.shares}, {self.price})'
 
-    def __eq__(self, other):
-      return isinstance(other, Stock) and ((self.name, self.shares, self.price) ==
-                                           (other.name, self.shares, other.price))
-
-    @classmethod
-    def from_row(cls, row):
-      ''' Alt constructor '''
-      values = [cast(val) for cast, val in zip(cls._types, row)]
-      return cls(*values)
-
     @property
     def cost(self):
       return self.shares * self.price
-
-    @property
-    def shares(self):
-      return self._shares 
-    @shares.setter
-    def shares(self, value):
-      self._shares = PositiveInteger.check(value) 
-
-    @property
-    def price(self):
-      return self._price
-    @price.setter
-    def price(self, value):
-      self._price = PositiveFloat.check(value)
        
     def sell(self, sellshares):
       self.shares -= sellshares
 
+  s = Stock('GOOG', 100, 490.10)
+  print(s.name)
+  print(s.shares)
+  s.shares = 34
+  try:
+    s.shares = '134'
+  except Exception as e:
+    print(e)
+  try:
+    s.shares = -1
+  except Exception as e:
+    print(e)
