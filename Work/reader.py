@@ -2,7 +2,6 @@
 
 import csv
 
-
 def csv_as_dicts(lines, types):
   '''
   Convert data to list of dicts
