@@ -1,15 +1,9 @@
 # stock.py
 
 import csv
-from typedproperty import String, Integer, Float
-
 
 class Stock:
-  name = String()
-  shares = Integer()
-  price = Float()
-
-  #__slots__ = ('name', '_shares', '_price') # slots!
+  __slots__ = ('name', '_shares', '_price') # slots!
   _types = (str, int, float)
   def __init__(self, name, shares, price):
     self.name = name
@@ -42,7 +36,7 @@ class Stock:
     if not isinstance(value, self._types[1]): # here we using type checking by _types class variable
       raise TypeError(f'Expected {self._types[1].__name__}')
     if not value >= 0:
-      raise TypeError('Expected shares >= 0')
+      raise ValueError('Expected shares >= 0')
     self._shares = value
 
   @property
@@ -54,7 +48,7 @@ class Stock:
     if not isinstance(value, self._types[2]): # here we using type checking by _types class variable
       raise TypeError(f'Expected {self._types[2].__name__}')
     if not value >= 0:
-      raise TypeError('Expected price >= 0')
+      raise ValueError('Expected price >= 0')
     self._price = value
      
   def sell(self, sellshares):
@@ -89,10 +83,6 @@ class redirect_stdout:
     sys.stdout = self.stdout
 
 if __name__ == "__main__":
-  s = Stock('test', 1, .04)
-  print(s)
-  exit()
-
   import tableformat
   import reader
   import sys

@@ -45,6 +45,24 @@ class TestStock(unittest.TestCase):
     self.assertEqual(s, s2)
     self.assertNotEqual(s, s3)
 
+  def test_bad_shares(self):
+    s = Stock(name='GOOG', shares=100, price=490.1)
+    with self.assertRaises(TypeError):
+      s.shares = '5'
+    with self.assertRaises(ValueError):
+      s.shares = -32
+
+  def test_bad_price(self):
+    s = Stock(name='GOOG', shares=100, price=490.1)
+    with self.assertRaises(TypeError):
+      s.price = '234'
+    with self.assertRaises(ValueError):
+      s.price = -1.
+
+  def test_non_exiten_attr(self):
+    s = Stock(name='GOOG', shares=100, price=490.1)
+    with self.assertRaises(AttributeError):
+      s.share = 1  
 
 if __name__ == '__main__':
   unittest.main()
