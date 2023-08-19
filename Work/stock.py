@@ -7,5 +7,5 @@ class Stock(Structure):
 
 if __name__ == '__main__':
   s = Stock('GOOG',100,490.1)
-  s = Stock('GOOG',100)
+  print(s)
 
