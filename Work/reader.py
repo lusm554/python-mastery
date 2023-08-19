@@ -2,6 +2,8 @@
 
 import csv
 from typing import List, Callable, Iterable
+import logging
+log = logging.getLogger(__name__)
 
 def convert_csv(lines, converter, *, headers=None) -> List:
   '''
@@ -14,7 +16,9 @@ def convert_csv(lines, converter, *, headers=None) -> List:
     try:
       records.append(converter(line, headers))
     except ValueError as error:
-      print(f"Row {rowno}: Bad row: {line}")
+      log.warning("Row %d: Bad row: %s" % (rowno, line))
+      log.debug("Row %d: Reason: %s" % (rowno, error))
+      
   return records
 
 def csv_as_dicts(lines: Iterable, types: type, *, headers: list | None = None) -> List[dict]:
