@@ -7,12 +7,8 @@ def convert_csv(lines, converter, *, headers=None) -> List:
   '''
   Convert data to list of converter objects
   '''
-  records = []
-  lines = csv.reader(lines)
   headers = next(lines) if not headers else headers
-  for line in lines:
-    records.append(converter(line, headers))
-  return records 
+  return list(map(lambda line: converter(line, headers), csv.reader(lines))) 
 
 def csv_as_dicts(lines: Iterable, types: type, *, headers: list | None = None) -> List[dict]:
   '''
