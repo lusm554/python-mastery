@@ -7,8 +7,15 @@ def convert_csv(lines, converter, *, headers=None) -> List:
   '''
   Convert data to list of converter objects
   '''
+  records = []
+  lines = csv.reader(lines)
   headers = next(lines) if not headers else headers
-  return list(map(lambda line: converter(line, headers), csv.reader(lines))) 
+  for rowno, line in enumerate(lines, start=1):
+    try:
+      records.append(converter(line, headers))
+    except ValueError as error:
+      print(f"Row {rowno}: Bad row: {line}")
+  return records
 
 def csv_as_dicts(lines: Iterable, types: type, *, headers: list | None = None) -> List[dict]:
   '''
@@ -49,3 +56,6 @@ if __name__ == '__main__':
 
   p = read_csv_as_instances('Data/portfolio.csv', Stock)
   pprint(p)
+
+  port = read_csv_as_dicts('Data/missing.csv', types=[str, int, float])
+  print(len(port))
