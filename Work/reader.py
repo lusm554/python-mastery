@@ -1,8 +1,9 @@
 # reader.py
 
 import csv
+from typing import List, Callable, Iterable
 
-def csv_as_dicts(lines, types, headers=None):
+def csv_as_dicts(lines: Iterable, types: type, headers: list | None = None):
   '''
   Convert data to list of dicts
   '''
@@ -10,12 +11,11 @@ def csv_as_dicts(lines, types, headers=None):
   lines = csv.reader(lines)
   headers = next(lines) if not headers else headers
   for line in lines:
-    print(list(zip(['name', 'shares', 'price'], line, types)))
     record = { name: cast(val) for name, val, cast in zip(headers, line, types) }
     records.append(record)
   return records
 
-def csv_as_instances(lines, cls, headers=None):
+def csv_as_instances(lines: Iterable, cls: type, headers: list | None = None):
   '''
   Convert data to list of instances
   '''
@@ -27,7 +27,7 @@ def csv_as_instances(lines, cls, headers=None):
     records.append(record)
   return records
 
-def read_csv_as_dicts(filename, types):
+def read_csv_as_dicts(filename: str, types: List[Callable]):
   '''
   Read CSV data into a list of dictionaries with optional type conversion
   '''
@@ -36,7 +36,7 @@ def read_csv_as_dicts(filename, types):
   return records
 
 
-def read_csv_as_instances(filename, cls):
+def read_csv_as_instances(filename: str, cls: type):
   '''
   Read CSV data into a list of instances
   '''
