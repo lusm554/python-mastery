@@ -1,9 +1,15 @@
 # stock.py
 
 import csv
+from typedproperty import String, Integer, Float
+
 
 class Stock:
-  __slots__ = ('name', '_shares', '_price') # slots!
+  name = String('name')
+  shares = Integer('shares')
+  price = Float('price')
+
+  #__slots__ = ('name', '_shares', '_price') # slots!
   _types = (str, int, float)
   def __init__(self, name, shares, price):
     self.name = name
@@ -83,6 +89,10 @@ class redirect_stdout:
     sys.stdout = self.stdout
 
 if __name__ == "__main__":
+  s = Stock('test', 1, .04)
+  print(s)
+  exit()
+
   import tableformat
   import reader
   import sys
