@@ -3,7 +3,7 @@
 import csv
 from typing import List, Callable, Iterable
 
-def csv_as_dicts(lines: Iterable, types: type, headers: list | None = None):
+def csv_as_dicts(lines: Iterable, types: type, headers: list | None = None) -> List[dict]:
   '''
   Convert data to list of dicts
   '''
@@ -15,7 +15,7 @@ def csv_as_dicts(lines: Iterable, types: type, headers: list | None = None):
     records.append(record)
   return records
 
-def csv_as_instances(lines: Iterable, cls: type, headers: list | None = None):
+def csv_as_instances(lines: Iterable, cls: type, headers: list | None = None) -> List[type]:
   '''
   Convert data to list of instances
   '''
@@ -27,7 +27,7 @@ def csv_as_instances(lines: Iterable, cls: type, headers: list | None = None):
     records.append(record)
   return records
 
-def read_csv_as_dicts(filename: str, types: List[Callable]):
+def read_csv_as_dicts(filename: str, types: List[Callable]) -> List[dict]:
   '''
   Read CSV data into a list of dictionaries with optional type conversion
   '''
@@ -36,7 +36,7 @@ def read_csv_as_dicts(filename: str, types: List[Callable]):
   return records
 
 
-def read_csv_as_instances(filename: str, cls: type):
+def read_csv_as_instances(filename: str, cls: type) -> List[type]:
   '''
   Read CSV data into a list of instances
   '''
