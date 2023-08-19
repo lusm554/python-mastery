@@ -1,20 +1,22 @@
 # typedproperty.py
 
-def typedproperty(name, expected_type):
-  private_name = '_' + name
+def typedproperty(expected_type):
+  class Type:
+    @property
+    def value(self):
+      return getattr(self, self.name)
 
-  @property
-  def value(self):
-    return getattr(self, private_name)
+    @value.setter
+    def value(self, val):
+      if not isinstance(val, expected_type):
+        raise TypeError(f'Expected {expected_type}')
+      setattr(self, self.name, val) 
 
-  @value.setter
-  def value(self, val):
-    if not isinstance(val, expected_type):
-      raise TypeError(f'Expected {expected_type}')
-    setattr(self, private_name, val) 
+    def __set_name__(self, cls, name):
+      self.name = name
 
-  return value
+  return Type
 
-String = lambda name: typedproperty(name, str)
-Integer = lambda name: typedproperty(name, int)
-Float = lambda name: typedproperty(name, float)
+String = lambda: typedproperty(str)
+Integer = lambda: typedproperty(int)
+Float = lambda: typedproperty(float)

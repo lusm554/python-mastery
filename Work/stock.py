@@ -5,9 +5,9 @@ from typedproperty import String, Integer, Float
 
 
 class Stock:
-  name = String('name')
-  shares = Integer('shares')
-  price = Float('price')
+  name = String()
+  shares = Integer()
+  price = Float()
 
   #__slots__ = ('name', '_shares', '_price') # slots!
   _types = (str, int, float)
