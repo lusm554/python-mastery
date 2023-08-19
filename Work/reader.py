@@ -2,26 +2,26 @@
 
 import csv
 
-def csv_as_dicts(lines, types):
+def csv_as_dicts(lines, types, headers=None):
   '''
   Convert data to list of dicts
   '''
   records = []
   lines = csv.reader(lines)
-  headers = next(lines)
+  headers = next(lines) if not headers else headers
   for line in lines:
     print(list(zip(['name', 'shares', 'price'], line, types)))
     record = { name: cast(val) for name, val, cast in zip(headers, line, types) }
     records.append(record)
   return records
 
-def csv_as_instances(lines, cls):
+def csv_as_instances(lines, cls, headers=None):
   '''
   Convert data to list of instances
   '''
   records = []
   lines = csv.reader(lines)
-  headers = next(lines)
+  headers = next(lines) if not headers else headers
   for line in lines:
     record = cls.from_row(line)
     records.append(record)
