@@ -1,11 +1,17 @@
 # validate.py
 
+import inspect
+
 class ValidatedFunction:
   def __init__(self, func):
     self.func = func
+    self.annotations = func.__annotations__
+    self.signature = inspect.signature(func)
 
   def __call__(self, *args, **kwargs):
-    print('Calling', self.func)
+    bound = self.signature.bind(*args, **kwargs)
+    for name, val in self.annotations.items():
+      val.check(bound.arguments[name])
     result = self.func(*args, **kwargs)
     return result
 
