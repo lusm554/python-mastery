@@ -5,12 +5,15 @@ import inspect
 
 class Structure:
   _fields = ()
-  @staticmethod
-  def _init():
-    locs = sys._getframe(1).f_locals
-    self = locs.pop('self')
-    for name, val in locs.items():
-      setattr(self, name, val)
+  @classmethod
+  def create_init(cls):
+    argstr = ','.join(cls._fields)
+    code = f'def __init__(self, {argstr}):\n'
+    for name in cls._fields:
+      code += f'  self.{name} = {name}\n'
+    locs = { }
+    exec(code, locs)
+    cls.__init__ = locs['__init__']
 
   @classmethod
   def set_fields(cls):
