@@ -1,5 +1,6 @@
 # lusm554 ignore
 *.swp
+out.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
