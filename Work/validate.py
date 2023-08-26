@@ -15,6 +15,30 @@ class ValidatedFunction:
     result = self.func(*args, **kwargs)
     return result
 
+def validated(func):
+  annotations = func.__annotations__
+  sig = inspect.signature(func)
+  # get return annotations
+  retcheck = annotations.pop('return', None)
+  def wrapper(*args, **kwargs):
+    bound = sig.bind(*args, **kwargs)
+    errors = []
+    for name, val in annotations.items():
+      try:
+        val.check(bound.arguments[name])
+      except Exception as e:
+        errors.append(f'  {name}: {e}')
+    if errors:
+      raise TypeError('Bad arguments\n%s' % '\n'.join(errors))
+    result = func(*args, **kwargs)
+    if retcheck:
+      try:
+        retcheck.check(result)
+      except Exception as e:
+        raise TypeError(f'Bad return: {e}') from None
+    return result
+  return wrapper
+
 class Validator:
   def __init__(self, name=None):
     self.name = name
