@@ -1,6 +1,7 @@
 # validate.py
 
 import inspect
+from functools import wraps
 
 class ValidatedFunction:
   def __init__(self, func):
@@ -20,6 +21,7 @@ def validated(func):
   sig = inspect.signature(func)
   # get return annotations
   retcheck = annotations.pop('return', None)
+  @wraps(func)
   def wrapper(*args, **kwargs):
     bound = sig.bind(*args, **kwargs)
     errors = []
