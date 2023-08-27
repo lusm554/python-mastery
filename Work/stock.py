@@ -20,4 +20,5 @@ if __name__ == '__main__':
   print(s)
   s = Stock(name='GOOG',shares=100,price=490.1)
   print(s)
-
+  s = Stock.from_row(['GOOG',100,490.1])
+  print(s)
