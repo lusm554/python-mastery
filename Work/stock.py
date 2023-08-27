@@ -1,10 +1,10 @@
 # stock.py
 
-from structure import Structure
+from structure import Structure, validate_attributes
 from validate import String, PositiveInteger, PositiveFloat
 
+@validate_attributes
 class Stock(Structure):
-  _fields = ('name', 'shares', 'price')
   name = String()
   shares = PositiveInteger()
   price = PositiveFloat()
@@ -16,8 +16,6 @@ class Stock(Structure):
   def sell(self, nshares):
     self.shares -= nshares
 
-Stock.create_init()
-  
 if __name__ == '__main__':
   s = Stock('GOOG',100,490.1)
   print(s)
