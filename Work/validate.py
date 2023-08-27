@@ -72,14 +72,12 @@ class Typed(Validator):
       raise TypeError(f'Expected {cls.expected_type}')
     return super().check(value)
 
-class Integer(Typed):
-  expected_type = int
-
-class Float(Typed):
-  expected_type = float
-
-class String(Typed):
-  expected_type = str
+_typed_classes = [
+  ('Integer', int),
+  ('Float', float),
+  ('String', str),
+]
+globals().update((name, type(name, (Typed,), {'expected_type': ty})) for name, ty in _typed_classes)
 
 class Positive(Validator):
   @classmethod
@@ -103,7 +101,6 @@ class PositiveFloat(Float, Positive):
 
 class NonEmptyString(String, NonEmpty):
   pass
-
 
 if __name__ == '__main__':
   class Stock:
