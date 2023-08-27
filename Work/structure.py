@@ -57,3 +57,7 @@ class Structure:
 
   def __repr__(self):
     return "%s(%s)" % (self.__class__.__name__, ', '.join(repr(getattr(self, attr)) for attr in self._fields))
+
+def typed_structure(clsname, **validators):
+  cls = type(clsname, (Structure,), validators)
+  return cls
