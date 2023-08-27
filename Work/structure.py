@@ -3,6 +3,7 @@
 import sys
 import inspect
 from validate import Validator, validated
+from collections import ChainMap
 
 def validate_attributes(cls):
   '''
@@ -21,7 +22,17 @@ def validate_attributes(cls):
     cls.create_init()
   return cls
 
-class Structure:
+class StructureMeta(type):
+  @classmethod
+  def __prepare__(meta, clsname, bases):
+    return ChainMap({}, Validator.validators)
+
+  @staticmethod
+  def __new__(meta, name, bases, methods):
+    methods = methods.maps[0]
+    return super().__new__(meta, name, bases, methods)
+
+class Structure(metaclass=StructureMeta):
   _fields = ()
   _types = ()
 

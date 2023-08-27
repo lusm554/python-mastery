@@ -54,6 +54,11 @@ class Validator:
   def __init__(self, name=None):
     self.name = name
 
+  validators = { }
+  @classmethod
+  def __init_subclass__(cls):
+    cls.validators[cls.__name__] = cls
+
   def __set_name__(self, cls, name):
     self.name = name
 
