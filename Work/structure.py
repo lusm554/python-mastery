@@ -4,8 +4,22 @@ import sys
 import inspect
 from validate import Validator
 
+def validate_attributes(cls):
+  validators = []
+  for name, val in vars(cls).items():
+    if isinstance(val, Validator):
+      validators.append(val)
+  cls._fields = [val.name for val in validators]
+  cls.create_init()
+  return cls
+
 class Structure:
   _fields = ()
+
+  @classmethod
+  def __init_subclass__(cls):
+    validate_attributes(cls)
+
   @classmethod
   def create_init(cls):
     argstr = ','.join(cls._fields)
@@ -29,12 +43,3 @@ class Structure:
 
   def __repr__(self):
     return "%s(%s)" % (self.__class__.__name__, ', '.join(repr(getattr(self, attr)) for attr in self._fields))
-
-def validate_attributes(cls):
-  validators = []
-  for name, val in vars(cls).items():
-    if isinstance(val, Validator):
-      validators.append(val)
-  cls._fields = [val.name for val in validators]
-  cls.create_init()
-  return cls

@@ -3,7 +3,6 @@
 from structure import Structure, validate_attributes
 from validate import String, PositiveInteger, PositiveFloat
 
-@validate_attributes
 class Stock(Structure):
   name = String()
   shares = PositiveInteger()
