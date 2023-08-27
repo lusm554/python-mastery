@@ -16,8 +16,9 @@ def validate_attributes(cls):
     elif callable(val) and val.__annotations__:
       setattr(cls, name, validated(val))
   cls._fields = tuple([val.name for val in validators])
-  cls._types = tuple([ getattr(v, 'expected_type') for v in validators]) 
-  cls.create_init()
+  cls._types = tuple([ getattr(v, 'expected_type', lambda x: x) for v in validators ]) 
+  if cls._fields:
+    cls.create_init()
   return cls
 
 class Structure:
