@@ -16,8 +16,11 @@ class Ticker(Structure):
 if __name__ == '__main__':
   from follow import follow
   import csv
+  from tableformat import create_formatter, print_table
+  
+  formatter = create_formatter('text')
   lines = follow('Data/stocklog.csv')
   rows = csv.reader(lines)
   records = (Ticker.from_row(row) for row in rows)
-  for record in records:
-    print(record)
+  negative = (rec for rec in records if rec.change < 0)
+  print_table(negative, ['name', 'price', 'change'], formatter)
