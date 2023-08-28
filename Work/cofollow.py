@@ -29,8 +29,11 @@ def consumer(func):
 @consumer
 def printer():
   while True:
-    item = yield
-    print(item)
+    try:
+      item = yield
+      print(item)
+    except Exception as e:
+      print('ERROR: %r' % e)
 
 # Example use
 if __name__ == '__main__':
