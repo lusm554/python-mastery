@@ -1,6 +1,7 @@
 # lusm554 ignore
 *.swp
 out.txt
+Data/stocklog.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
