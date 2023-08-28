@@ -40,9 +40,12 @@ class Structure(metaclass=StructureMeta):
   def __init_subclass__(cls):
     validate_attributes(cls)
 
-  def __iter__(self):
+  def __iter__(self): # now we can use on instance list, tuple, unpacking and etc...
     for name in self._fields:
       yield getattr(self, name)
+
+  def __eq__(self, other):
+    return isinstance(self, type(other)) and tuple(self) == tuple(other) 
 
   @classmethod
   def create_init(cls):
