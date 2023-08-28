@@ -40,6 +40,10 @@ class Structure(metaclass=StructureMeta):
   def __init_subclass__(cls):
     validate_attributes(cls)
 
+  def __iter__(self):
+    for name in self._fields:
+      yield getattr(self, name)
+
   @classmethod
   def create_init(cls):
     argstr = ','.join(cls._fields)
