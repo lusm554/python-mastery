@@ -2,7 +2,7 @@
 
 import sys
 import inspect
-from validate import Validator, validated
+from .validate import Validator, validated
 from collections import ChainMap
 
 def validate_attributes(cls):

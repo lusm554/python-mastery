@@ -1,6 +1,6 @@
 # stock.py
 
-from structure import Structure, validate_attributes
+from structly.structure import Structure
 
 class Stock(Structure):
   name = String()
@@ -15,13 +15,8 @@ class Stock(Structure):
     self.shares -= nshares
 
 if __name__ == '__main__':
-  s = Stock('GOOG',100,490.1)
-  print(s)
-  try:
-    s.sell(-1)
-  except TypeError:
-    print('except works') 
-  s = Stock(name='GOOG',shares=100,price=490.1)
-  print(s)
-  s = Stock.from_row(['GOOG',100,490.1])
-  print(s)
+  from structly.reader import read_csv_as_instances
+  from structly.tableformat import create_formatter, print_table
+  portfolio = read_csv_as_instances('Data/portfolio.csv', Stock)
+  formatter = create_formatter('text')
+  print_table(portfolio, ['name', 'shares', 'price'], formatter)
