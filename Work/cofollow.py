@@ -3,6 +3,11 @@
 import os
 import time
 
+def receive(expected_type):
+  msg = yield
+  assert isinstance(msg, expected_type), 'Expected type %s' % (expected_type)
+  return msg
+
 # Data source
 def follow(filename, target):
   with open(filename, 'r') as f:
