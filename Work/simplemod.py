@@ -9,7 +9,7 @@ def foo():
 # A simple class
 class Spam:
   def yow(self):
-    print('Yow!')
+    print('More Yow!')
 
 # A scripting statement
 print('Loaded simplemod')
