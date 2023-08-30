@@ -31,25 +31,42 @@ def run():
     except StopIteration:
       print('Task done')
 
+class GenSocket:
+  def __init__(self, sock):
+    self.sock = sock
+
+  def accept(self):
+    yield 'recv', self.sock
+    client, addr = self.sock.accept()
+    return GenSocket(client), addr
+
+  def recv(self, maxsize):
+    yield 'recv', self.sock
+    return self.sock.recv(maxsize)
+
+  def send(self, data):
+    yield 'send', self.sock
+    return self.sock.send(data)
+
+  def __getattr__(self, name):
+    return getattr(self.sock, name)
+
 def tcp_server(address, handler):
-  sock = socket(AF_INET, SOCK_STREAM)
+  sock = GenSocket(socket(AF_INET, SOCK_STREAM))
   sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
   sock.bind(address)
   sock.listen()
   while True:
-    yield 'recv', sock
-    client, addr = sock.accept()
+    client, addr = yield from sock.accept() 
     tasks.append(handler(client, addr))
 
 def echo_handler(client, address):
   print('Connection from', address)
   while True:
-    yield 'recv', client
-    data = client.recv(1000)
+    data = yield from client.recv(1000)
     if not data:
       break
-    yield 'send', client
-    client.send(b'GOT:' + data)
+    yield from client.send(b'GOT:' + data)
   print('Connection closed')
 
 if __name__ == '__main__':
