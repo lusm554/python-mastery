@@ -1,6 +1,6 @@
 # stock.py
 
-from structly import Structure
+from structly import *
 
 class Stock(Structure):
   name = String()
