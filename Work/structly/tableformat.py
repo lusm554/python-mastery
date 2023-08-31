@@ -2,6 +2,8 @@
 
 from abc import ABC, abstractmethod
 
+__all__ = ['create_formatter', 'print_table']
+
 class TableFormatter(ABC):
   @abstractmethod
   def headings(self, headers):

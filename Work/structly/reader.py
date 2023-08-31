@@ -5,6 +5,8 @@ from typing import List, Callable, Iterable
 import logging
 log = logging.getLogger(__name__)
 
+__all__ = ['read_csv_as_instances', 'read_csv_as_dicts']
+
 def convert_csv(lines, converter, *, headers=None) -> List:
   '''
   Convert data to list of converter objects
