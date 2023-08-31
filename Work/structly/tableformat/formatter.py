@@ -5,6 +5,13 @@ from abc import ABC, abstractmethod
 __all__ = ['create_formatter', 'print_table']
 
 class TableFormatter(ABC):
+  _formats = { }
+
+  @classmethod
+  def __init_subclass__(cls):
+    name = cls.__module__.split('.')[-1]
+    TableFormatter._formats[name] = cls
+
   @abstractmethod
   def headings(self, headers):
     raise NotImplementedError()
@@ -27,15 +34,10 @@ from .formats.text import TextTableFormatter
 from .formats.csv import CSVTableFormatter
 from .formats.html import HTMLTableFormatter
 
-def create_formatter(fmt, column_formats=None, upper_headers=False):
-  if fmt == 'text':
-    formatter_cls = TextTableFormatter
-  elif fmt == 'csv':
-    formatter_cls = CSVTableFormatter
-  elif fmt == 'html':
-    formatter_cls = HTMLTableFormatter
-  else:
-    raise ValueError(f'Format {fmt} not found')
+def create_formatter(name, column_formats=None, upper_headers=False):
+  formatter_cls = TableFormatter._formats.get(name)
+  if not formatter_cls:
+    raise RuntimeError('Unknown format %s' % name)
 
   if column_formats:
     class formatter_cls(ColumnFormatMixin, formatter_cls):
